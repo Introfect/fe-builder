@@ -1,6 +1,10 @@
 "use client";
-import ChatContainer from "@/components/ChatContainer";
-import { Suspense } from "react";
+import dynamic from "next/dynamic";
+
+const DynamicComponentWithNoSSR = dynamic(
+  () => import("@/components/ChatContainer"),
+  { ssr: false }
+);
 
 export default function Home() {
   return (
@@ -9,9 +13,7 @@ export default function Home() {
 
       <main className="flex-1 max-w-7xl w-full mx-auto rounded-lg  no-scrollbar overflow-hidden">
         <div className="h-screen flex flex-col no-scrollbar">
-          <Suspense>
-            <ChatContainer />
-          </Suspense>
+          <DynamicComponentWithNoSSR />
         </div>
       </main>
     </div>
