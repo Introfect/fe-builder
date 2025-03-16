@@ -1,3 +1,4 @@
+"use client";
 import ChatContainer from "@/components/ChatContainer";
 import { Suspense } from "react";
 

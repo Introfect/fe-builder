@@ -7,11 +7,16 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 export default function ChatContainer() {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const baseUrl =
+    process.env.DEVELOPMENT_ENVIRONMENT === "development"
+      ? "http://localhost:3000"
+      : "https://fe-builder-git-master-introfects-projects.vercel.app";
 
   const { data } = useSuspenseQuery({
     queryKey: ["get-initial-messages"],
+
     queryFn: async () => {
-      const res = await fetch("/api/get-thread-message", {
+      const res = await fetch(`${baseUrl}/api/get-thread-message`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
