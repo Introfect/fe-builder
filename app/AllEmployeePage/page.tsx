@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+"use client";
+import { useEffect, useState } from "react";
 
 interface Employee {
   id: number;
@@ -15,7 +16,7 @@ const AllEmployeePage: React.FC = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch('/api/employee');
+        const response = await fetch("/api/employee");
         if (response.ok) {
           const data = await response.json();
           setEmployees(data.data);
@@ -49,7 +50,9 @@ const AllEmployeePage: React.FC = () => {
               <tr key={employee.id} className="border-b border-gray-300">
                 <td className="py-4 px-6">{employee.name}</td>
                 <td className="py-4 px-6">{employee.email}</td>
-                <td className="py-4 px-6">${employee.salary.toLocaleString()}</td>
+                <td className="py-4 px-6">
+                  ${employee.salary.toLocaleString()}
+                </td>
                 <td className="py-4 px-6">{employee.age}</td>
                 <td className="py-4 px-6">{employee.phone}</td>
               </tr>
