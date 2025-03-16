@@ -1,5 +1,4 @@
 import ChatContainer from "@/components/ChatContainer";
-import { MessageCircle } from "lucide-react";
 import { Suspense } from "react";
 
 export default function Home() {

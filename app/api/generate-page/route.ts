@@ -1,4 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
 import path from "path";
 import { mkdir } from "fs/promises";
@@ -61,13 +60,11 @@ function extractComponentName(codeString: string) {
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 async function getNewPageCode({ userPrompt }: { userPrompt: string }) {
-  const message = await openai.beta.threads.messages.create(
-    process.env.ASSISTANT_THREAD_ID!,
-    {
-      role: "user",
-      content: userPrompt,
-    }
-  );
+  await openai.beta.threads.messages.create(process.env.ASSISTANT_THREAD_ID!, {
+    role: "user",
+    content: userPrompt,
+  });
+
   const run = await openai.beta.threads.runs.create(
     process.env.ASSISTANT_THREAD_ID!,
     {
@@ -76,6 +73,7 @@ async function getNewPageCode({ userPrompt }: { userPrompt: string }) {
   );
 
   let runStatus = run;
+
   while (runStatus.status === "queued" || runStatus.status === "in_progress") {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     runStatus = await openai.beta.threads.runs.retrieve(
@@ -100,7 +98,7 @@ async function getNewPageCode({ userPrompt }: { userPrompt: string }) {
   }
 }
 
-export async function POST(req: Request, res: NextApiResponse) {
+export async function POST(req: Request) {
   const { pageName } = await req.json();
   console.log(pageName);
   const newPageCode = await getNewPageCode({ userPrompt: pageName });
